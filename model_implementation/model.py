@@ -79,8 +79,11 @@ import torchvision.models as models
 class PlasmaCNN(nn.Module):
     def __init__(self):
         super(PlasmaCNN, self).__init__()
-        self.base_model = models.resnet18(pretrained=True)  # Load pre-trained ResNet18
-        self.base_model.fc = nn.Linear(self.base_model.fc.in_features, 1)  # Modify for regression
+        self.base_model = models.resnet18(pretrained=True)  # Load  
+        self.base_model.fc = nn.Sequential(
+            nn.Linear(self.base_model.fc.in_features, 1),  # Modify for regression
+            nn.ReLU()  # Ensure positive outputs
+        )
     
     def forward(self, x):
         return self.base_model(x)
@@ -101,7 +104,7 @@ optimizer = optim.Adam(model.parameters(), lr=1e-4)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = model.to(device)
 
-# # Training loop
+# Training loop
 # num_epochs = 11
 
 # for epoch in range(num_epochs):
@@ -142,8 +145,8 @@ model = model.to(device)
 #-------------------------------------------------------
 #save and evaluate model
 # Save the model
-torch.save(model.state_dict(), "plasma_cnn.pth")
-print("Model saved!")
+# torch.save(model.state_dict(), "plasma_cnn.pth")
+# print("Model saved!")
 
 # Load the model (for inference later)
 model.load_state_dict(torch.load("plasma_cnn.pth"))
@@ -153,7 +156,7 @@ model.eval()
 #------------------------------------------------
 #perform inference
 
-# Testing loop
+#Testing loop
 test_loss = 0.0
 with torch.no_grad():  # Disable gradient computation for inference
     for images, labels in test_loader:
@@ -182,6 +185,6 @@ def predict(image_path, model):
     return output
 
 # Example
-image_path = "/path/to/new_image.png"
+image_path = "/home/exouser/Public/Image-Classification-of-Fusion-Devices-/model_implementation/test_image112246_2.png"
 predicted_field_periods = predict(image_path, model)
 print(f"Predicted field periods: {predicted_field_periods:.2f}")

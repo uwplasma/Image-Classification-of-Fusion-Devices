@@ -14,7 +14,7 @@ from qsc.qsc import Qsc
 from qsc.plot import plot_boundary
 df = pd.read_csv("data/XGStels/XGStels.csv")
 
-row_index = 1400  # Change this to the desired row index
+row_index = 92711  # Change this to the desired row index
 row = df.iloc[row_index]
 
 # Extract parameters
@@ -25,7 +25,7 @@ nfp, etabar, B2c, p2 = row["nfp"], row["etabar"], row["B2c"], row["p2"]
 try:
     # Create Qsc instance and plot boundary
     stel = Qsc(rc=[1, rc1, rc2, rc3], zs=[0, zs1, zs2, zs3], nfp=nfp, etabar=etabar, B2c=B2c, p2=p2, order='r2')
-    stel.plot_boundary(r=0.1, savefig=f"test_image{row_index + 1}")
+    stel.plot_boundary(r=0.1, savefig=f"test_image{row_index + 2}")
 except Exception as e:
     print(f"Plotting failed for row {row_index + 1}: {e}")
     print(f"Values: {rc1}, {rc2}, {rc3}, {zs1}, {zs2}, {zs3}, {nfp}, {etabar}, {B2c}, {p2}\n")
