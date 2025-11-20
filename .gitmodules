@@ -1,0 +1,3 @@
+[submodule "ESSOS"]
+	path = ESSOS
+	url = https://github.com/uwplasma/ESSOS.git
